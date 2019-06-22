@@ -40,10 +40,10 @@ or the [test.html](http://rawgit.com/component/textarea-caret-position/master/te
 ## Example
 
 ```js
-var getCaretCoordinates = require('textarea-caret');
+var getCaretPosition = require('textarea-caret');
 
 document.querySelector('textarea').addEventListener('input', function () {
-  var caret = getCaretCoordinates(this, this.selectionEnd);
+  var caret = getCaretPosition(this, this.selectionEnd);
   console.log('(top, left, height) = (%s, %s, %s)', caret.top, caret.left, caret.height);
 })
 ```
@@ -51,7 +51,7 @@ document.querySelector('textarea').addEventListener('input', function () {
 
 ## API
 
-### getCaretCoordinates(element, position)
+### getCaretPosition(element, position)
 
 * `element` is the DOM element, either an `<input type="text">` or `textarea`
 
