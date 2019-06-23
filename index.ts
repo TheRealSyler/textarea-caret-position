@@ -31,13 +31,20 @@ export namespace Caret {
     /**
      * Enables debug Mode.
      */
-    debug: boolean;
+    debug?: boolean;
+    /**
+     * usesSelection End Instead of selection Start.
+     */
+    useSelectionEnd?: boolean;
+    /**
+     * if true the left position gets caped if left >= element Width.
+     */
+    checkWidthOverflow?: boolean;
   }
 
   /**
    * Returns the Absolute (relative to the inner window size) position of the caret in the given element.
    * @param element Input (has to be type='text') or Text Area.
-   * @param options For Debuging ony can Safely be ignored.
    */
   export function getAbsolutePosition(element: HTMLInputElement | HTMLTextAreaElement): Position {
     const caretRelPost = getRelativePosition(element);
@@ -51,10 +58,14 @@ export namespace Caret {
   /**
    * Returns the relative position of the caret in the given element.
    * @param element Input (has to be type='text') or Text Area.
-   * @param options For Debuging ony can Safely be ignored.
    */
-  export function getRelativePosition(element: HTMLInputElement | HTMLTextAreaElement, options: Options = { debug: false }): Position {
-    const position = element.selectionStart !== null ? element.selectionStart : 0;
+  export function getRelativePosition(
+    element: HTMLInputElement | HTMLTextAreaElement,
+    options: Options = { debug: false, useSelectionEnd: false, checkWidthOverflow: true }
+  ): Position {
+    const selectionStart = element.selectionStart !== null ? element.selectionStart : 0;
+    const selectionEnd = element.selectionEnd !== null ? element.selectionEnd : 0;
+    const position = options.useSelectionEnd ? selectionEnd : selectionStart;
     // We'll copy the properties below into the mirror div.
     // Note that some browsers, such as Firefox, do not concatenate properties
     // into their shorthand (e.g. padding-top, padding-bottom etc. -> padding),
@@ -100,21 +111,22 @@ export namespace Caret {
       throw new Error('textarea-caret-position#getCaretPosition should only be called in a browser');
     }
 
-    var debug = (options && options.debug) || false;
+    const debug = (options && options.debug) || false;
     if (debug) {
-      var el = document.querySelector('#input-textarea-caret-position-mirror-div');
+      const el = document.querySelector('#input-textarea-caret-position-mirror-div');
       if (el && el.parentNode) el.parentNode.removeChild(el);
     }
 
     // The mirror div will replicate the textarea's style
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.id = 'input-textarea-caret-position-mirror-div';
     document.body.appendChild(div);
 
-    var style = div.style;
+    const style = div.style;
     // @ts-ignore
-    var computed = window.getComputedStyle ? window.getComputedStyle(element) : element.currentStyle; // currentStyle for IE < 9
-    var isInput = element.nodeName === 'INPUT';
+    const computed = window.getComputedStyle ? window.getComputedStyle(element) : element.currentStyle; // currentStyle for IE < 9
+
+    const isInput = element.nodeName === 'INPUT';
 
     // Default textarea styles
     style.whiteSpace = 'pre-wrap';
@@ -129,13 +141,13 @@ export namespace Caret {
       if (isInput && prop === 'lineHeight') {
         // Special case for <input>s because text is rendered centered and line height may be != height
         if (computed.boxSizing === 'border-box') {
-          var height = parseInt(computed.height);
-          var outerHeight =
+          const height = parseInt(computed.height);
+          const outerHeight =
             parseInt(computed.paddingTop) +
             parseInt(computed.paddingBottom) +
             parseInt(computed.borderTopWidth) +
             parseInt(computed.borderBottomWidth);
-          var targetHeight = outerHeight + parseInt(computed.lineHeight);
+          const targetHeight = outerHeight + parseInt(computed.lineHeight);
           if (height > targetHeight) {
             style.lineHeight = height - outerHeight + 'px';
           } else if (height === targetHeight) {
@@ -164,7 +176,7 @@ export namespace Caret {
     // spaces need to be replaced with non-breaking spaces - http://stackoverflow.com/a/13402035/1269037
     if (isInput && div.textContent) div.textContent = div.textContent.replace(/\s/g, '\u00a0');
 
-    var span = document.createElement('span');
+    const span = document.createElement('span');
     // Wrapping must be replicated *exactly*, including when a long word gets
     // onto the next line, with whitespace at the end of the line before (#7).
     // The  *only* reliable way to do that is to copy the *entire* rest of the
@@ -173,7 +185,7 @@ export namespace Caret {
     span.textContent = element.value.substring(position) || '.'; // || because a completely empty faux span doesn't render at all
     div.appendChild(span);
 
-    var coordinates = {
+    const relativePosition = {
       top: span.offsetTop + parseInt(computed['borderTopWidth']),
       left: span.offsetLeft + parseInt(computed['borderLeftWidth']),
       absolute: false,
@@ -186,7 +198,10 @@ export namespace Caret {
       document.body.removeChild(div);
     }
 
-    return coordinates;
+    if (relativePosition.left >= element.clientWidth && options.checkWidthOverflow) {
+      relativePosition.left = element.clientWidth;
+    }
+    return relativePosition;
   }
   /**
    * set the top and left css stlye of the element based on the absolute posiotion of the caretElements caret,

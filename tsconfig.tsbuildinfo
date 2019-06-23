@@ -122,8 +122,8 @@
         "signature": "63b66918290d794f73832a6d0325be5026236674fe8c0cb0b68d162000d7bbe8"
       },
       "c:/users/syler/google drive/code stuff/textarea-caret-position/index.ts": {
-        "version": "dec6ae1bc2a50adb1431f991849f1ce7129a8e6fc152803b03c40316c2890db5",
-        "signature": "d0e97d9243484536f69c811c05269f050a79a431b0788da88072362960c8dcdb"
+        "version": "3174a934ae1a1121ceb7a6d41ed0b53dc02290afab60f9012c4549d3e2a95f87",
+        "signature": "943bf758e5ac95d77652d37dcb1ba75146404a0611629cfe13d77b8a5dfd533a"
       },
       "c:/users/syler/node_modules/@types/estree/index.d.ts": {
         "version": "89ccbe04e737ce613f5f04990271cfa84901446350b8551b0555ddf19319723b",
@@ -1140,10 +1140,6 @@
         "c:/users/syler/node_modules/@types/node/ts3.2/globals.d.ts",
         "c:/users/syler/node_modules/@types/node/util.d.ts"
       ],
-      "c:/users/syler/node_modules/@types/tern/index.d.ts": [
-        "c:/users/syler/node_modules/@types/node/util.d.ts",
-        "c:/users/syler/node_modules/@types/node/ts3.2/util.d.ts"
-      ],
       "c:/users/syler/node_modules/@types/tern/lib/tern/index.d.ts": [
         "c:/users/syler/node_modules/@types/estree/index.d.ts",
         "c:/users/syler/node_modules/@types/tern/lib/infer/index.d.ts",
@@ -1153,6 +1149,10 @@
       "c:/users/syler/node_modules/@types/tern/lib/infer/index.d.ts": [
         "c:/users/syler/node_modules/@types/estree/index.d.ts",
         "c:/users/syler/node_modules/@types/tern/lib/tern/index.d.ts",
+        "c:/users/syler/node_modules/@types/node/util.d.ts",
+        "c:/users/syler/node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "c:/users/syler/node_modules/@types/tern/index.d.ts": [
         "c:/users/syler/node_modules/@types/node/util.d.ts",
         "c:/users/syler/node_modules/@types/node/ts3.2/util.d.ts"
       ]

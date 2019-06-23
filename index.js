@@ -1,9 +1,10 @@
-export var Caret;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Caret;
 (function (Caret) {
     /**
      * Returns the Absolute (relative to the inner window size) position of the caret in the given element.
      * @param element Input (has to be type='text') or Text Area.
-     * @param options For Debuging ony can Safely be ignored.
      */
     function getAbsolutePosition(element) {
         var caretRelPost = getRelativePosition(element);
@@ -18,11 +19,12 @@ export var Caret;
     /**
      * Returns the relative position of the caret in the given element.
      * @param element Input (has to be type='text') or Text Area.
-     * @param options For Debuging ony can Safely be ignored.
      */
     function getRelativePosition(element, options) {
-        if (options === void 0) { options = { debug: false }; }
-        var position = element.selectionStart !== null ? element.selectionStart : 0;
+        if (options === void 0) { options = { debug: false, useSelectionEnd: false, checkWidthOverflow: true }; }
+        var selectionStart = element.selectionStart !== null ? element.selectionStart : 0;
+        var selectionEnd = element.selectionEnd !== null ? element.selectionEnd : 0;
+        var position = options.useSelectionEnd ? selectionEnd : selectionStart;
         // We'll copy the properties below into the mirror div.
         // Note that some browsers, such as Firefox, do not concatenate properties
         // into their shorthand (e.g. padding-top, padding-bottom etc. -> padding),
@@ -95,13 +97,13 @@ export var Caret;
                 // Special case for <input>s because text is rendered centered and line height may be != height
                 if (computed.boxSizing === 'border-box') {
                     var height = parseInt(computed.height);
-                    var outerHeight = parseInt(computed.paddingTop) +
+                    var outerHeight_1 = parseInt(computed.paddingTop) +
                         parseInt(computed.paddingBottom) +
                         parseInt(computed.borderTopWidth) +
                         parseInt(computed.borderBottomWidth);
-                    var targetHeight = outerHeight + parseInt(computed.lineHeight);
+                    var targetHeight = outerHeight_1 + parseInt(computed.lineHeight);
                     if (height > targetHeight) {
-                        style.lineHeight = height - outerHeight + 'px';
+                        style.lineHeight = height - outerHeight_1 + 'px';
                     }
                     else if (height === targetHeight) {
                         style.lineHeight = computed.lineHeight;
@@ -140,7 +142,7 @@ export var Caret;
         // For inputs, just '.' would be enough, but no need to bother.
         span.textContent = element.value.substring(position) || '.'; // || because a completely empty faux span doesn't render at all
         div.appendChild(span);
-        var coordinates = {
+        var relativePosition = {
             top: span.offsetTop + parseInt(computed['borderTopWidth']),
             left: span.offsetLeft + parseInt(computed['borderLeftWidth']),
             absolute: false,
@@ -152,7 +154,10 @@ export var Caret;
         else {
             document.body.removeChild(div);
         }
-        return coordinates;
+        if (relativePosition.left >= element.clientWidth && options.checkWidthOverflow) {
+            relativePosition.left = element.clientWidth;
+        }
+        return relativePosition;
     }
     Caret.getRelativePosition = getRelativePosition;
     /**
@@ -187,11 +192,11 @@ export var Caret;
         return pos;
     }
     Caret.setElementPositionBasedOnCaret = setElementPositionBasedOnCaret;
-})(Caret || (Caret = {}));
+})(Caret = exports.Caret || (exports.Caret = {}));
 /**
  * @deprecated
  */
-export var getCaretCoordinates = function (element, position, options) {
+exports.getCaretCoordinates = function (element, position, options) {
     if (options === void 0) { options = { debug: false }; }
     return Caret.getRelativePosition(element, options);
 };
