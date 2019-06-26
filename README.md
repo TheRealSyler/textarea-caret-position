@@ -1,6 +1,6 @@
 # Textarea Caret Position Typesctipt version
 
-a fork of [this](https://github.com/component/textarea-caret-position) repo, with new functions.
+is a fork of [this](https://github.com/component/textarea-caret-position) repo, with new functions.
 
 ## Example
 > Note: the packege has only been tested in angular but should also work in vue, react or other frameworks.

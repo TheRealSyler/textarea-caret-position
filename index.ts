@@ -238,7 +238,7 @@ export namespace Caret {
   }
 }
 /**
- * @deprecated
+ * @deprecated use Caret.getRelativePosition instead.
  */
 export const getCaretCoordinates = (element: any, position: number, options = { debug: false }) =>
   Caret.getRelativePosition(element, options);
