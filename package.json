@@ -1,13 +1,18 @@
 {
   "name": "textarea-caret-ts",
   "repository": "theRealSyler/textarea-caret-position",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "authors": "Dan Dascalescu (@dandv), Jonathan Ong <me@jongleberry.com> (http://jongleberry.com), Leonard Grosoli <hileo77@gmail.com>",
-  "description": "a fork of the textarea-caret package",
+  "description": "fork of the textarea-caret package",
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
+  "scripts": {
+    "prepack": "tsc -b"
+  },
   "main": "index.js",
+  "types": "index.d.ts",
   "license": "MIT",
   "keywords": [
     "textarea",

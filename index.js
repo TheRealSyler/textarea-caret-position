@@ -75,7 +75,7 @@ var Caret;
             if (el && el.parentNode)
                 el.parentNode.removeChild(el);
         }
-        // The mirror div will replicate the textarea's style
+        // The mirror div will replicate the textareas style
         var div = document.createElement('div');
         div.id = 'input-textarea-caret-position-mirror-div';
         document.body.appendChild(div);
@@ -138,7 +138,7 @@ var Caret;
         // Wrapping must be replicated *exactly*, including when a long word gets
         // onto the next line, with whitespace at the end of the line before (#7).
         // The  *only* reliable way to do that is to copy the *entire* rest of the
-        // textarea's content into the <span> created at the caret position.
+        // textareas content into the <span> created at the caret position.
         // For inputs, just '.' would be enough, but no need to bother.
         span.textContent = element.value.substring(position) || '.'; // || because a completely empty faux span doesn't render at all
         div.appendChild(span);
@@ -161,24 +161,25 @@ var Caret;
     }
     Caret.getRelativePosition = getRelativePosition;
     /**
-     * set the top and left css stlye of the element based on the absolute posiotion of the caretElements caret,
-     * @param offset offsets the postion.
+     * sets the top and left css style of the element based on the absolute position of the caretElements caret,
+     * @param offset offsets the position.
      * @param detectBoundary offsets the position if the position would be outside the window.
      * @param returnOnly if true the element position wont be set.
      */
-    function setElementPositionBasedOnCaret(element, caretElement, offset, detectBoundary, returnOnly) {
+    function setElementPositionBasedOnCaret(element, caretElement, offset, margin, detectBoundary, returnOnly) {
         if (offset === void 0) { offset = { top: 0, left: 0 }; }
+        if (margin === void 0) { margin = 2; }
         if (detectBoundary === void 0) { detectBoundary = true; }
         if (returnOnly === void 0) { returnOnly = false; }
         var pos = getAbsolutePosition(caretElement);
         if (detectBoundary) {
             pos.left =
-                pos.left + element.clientWidth + offset.left > window.scrollX + window.innerWidth
-                    ? (pos.left = window.scrollX + window.innerWidth - element.clientWidth)
+                pos.left + (element.clientWidth + margin) + offset.left > window.scrollX + window.innerWidth
+                    ? (pos.left = window.scrollX + window.innerWidth - (element.clientWidth + margin))
                     : (pos.left += offset.left);
             pos.top =
-                pos.top + element.clientHeight + offset.top > window.scrollY + window.innerHeight
-                    ? (pos.top -= element.clientHeight)
+                pos.top + (element.clientWidth + margin) + offset.top > window.scrollY + window.innerHeight
+                    ? (pos.top -= element.clientWidth + margin)
                     : (pos.top += offset.top);
         }
         else {
@@ -194,7 +195,7 @@ var Caret;
     Caret.setElementPositionBasedOnCaret = setElementPositionBasedOnCaret;
 })(Caret = exports.Caret || (exports.Caret = {}));
 /**
- * @deprecated
+ * @deprecated use Caret.getRelativePosition instead.
  */
 exports.getCaretCoordinates = function (element, position, options) {
     if (options === void 0) { options = { debug: false }; }

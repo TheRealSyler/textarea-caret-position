@@ -6,3 +6,6 @@
 node_modules
 components
 coverage
+.vscode
+tsconfig.tsbuildinfo
+package-lock.json
