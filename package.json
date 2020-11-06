@@ -1,7 +1,7 @@
 {
   "name": "textarea-caret-ts",
   "repository": "theRealSyler/textarea-caret-position",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "authors": "Dan Dascalescu (@dandv), Jonathan Ong <me@jongleberry.com> (http://jongleberry.com), Leonard Grosoli <hileo77@gmail.com>",
   "description": "fork of the textarea-caret package",
   "files": [

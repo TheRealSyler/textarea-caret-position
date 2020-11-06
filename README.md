@@ -1,9 +1,10 @@
-# Textarea Caret Position Typesctipt version
+# Textarea Caret Position Typescript version
 
 is a fork of [this](https://github.com/component/textarea-caret-position) repo, with new functions.
 
 ## Example
-> Note: the packege has only been tested in angular but should also work in vue, react or other frameworks.
+
+> Note: the package has only been tested in angular but should also work in vue, react or other frameworks.
 
 ```ts
 import { Caret } from 'textarea-caret-ts';
